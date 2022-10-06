@@ -1,10 +1,9 @@
 ﻿using System;
-using Assets.Source.Model.Factory;
-using Assets.Source.Model.Utils;
-using Assets.Source.Presenters;
+using Source.Model.Factory;
+using Source.Model.Utils;
 using UnityEngine;
 
-namespace Assets.Source.Model.Weapon
+namespace Source.Model.Weapon
 {
     public class DefaultGun : IGun
     {

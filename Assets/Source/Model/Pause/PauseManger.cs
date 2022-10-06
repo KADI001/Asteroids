@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Assets.Source.Model.Pause
+namespace Source.Model.Pause
 {
     public class PauseManger : IPauseManger
     {

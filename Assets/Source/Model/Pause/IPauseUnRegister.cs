@@ -1,4 +1,4 @@
-﻿namespace Assets.Source.Model.Pause
+﻿namespace Source.Model.Pause
 {
     public interface IPauseUnRegister
     {

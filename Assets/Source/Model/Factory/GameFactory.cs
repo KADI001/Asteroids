@@ -1,7 +1,7 @@
-﻿using Assets.Source.Model.Weapon;
+﻿using Source.Model.Weapon;
 using UnityEngine;
 
-namespace Assets.Source.Model.Factory
+namespace Source.Model.Factory
 {
     public sealed class GameFactory : IGameFactory
     {

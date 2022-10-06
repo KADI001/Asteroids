@@ -1,16 +1,18 @@
-using Assets.Source.Model;
+using Source.Model;
 using UnityEngine;
 
-namespace Assets.Source.Presenters
+namespace Source.Presenters
 {
     public abstract class Presenter : MonoBehaviour
     {
+        private Camera _camera;
         public Transformable Model { get; private set; }
         public IUpdatable Updatable { get; private set; }
 
-        public void Init(Transformable model)
+        public void Init(Transformable model, Camera camera)
         {
             Model = model;
+            _camera = camera;
 
             if (model is IUpdatable updatable)
                 Updatable = updatable;
@@ -51,7 +53,7 @@ namespace Assets.Source.Presenters
         protected virtual void OnDisabling() { }
 
         protected void OnMoved() => 
-            transform.position = Model.Position;
+            transform.position = new Vector2(_camera.transform.position.x, _camera.transform.position.y) + Model.Position;
 
         protected void OnRotated() => 
             transform.rotation = Quaternion.Euler(0, 0, Model.Rotation);

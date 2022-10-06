@@ -1,32 +1,54 @@
-using Assets.Source.Model.Score;
+using Source.Model.Score;
 using TMPro;
 using UnityEngine;
 
-namespace Assets.Source.Presenters
+namespace Source.Presenters
 {
     [RequireComponent(typeof(TMP_Text))]
     public class ScorePresenter : MonoBehaviour
     {
         private const string ScoreString = "Score: ";
 
-        private Score _score;
         private TMP_Text _textMesh;
 
-        public Score Model => _score;
+        public Score Score { get; private set; }
 
-        private void Awake()
-        {
-            _score = new Score();
+        private void Awake() => 
             _textMesh = GetComponent<TMP_Text>();
+
+        private void OnEnable()
+        {
+            if(Score == null)
+                return;
+
+            Score.ValueChanged += OnValueChanged;
         }
 
-        private void OnEnable() => 
-            _score.ValueChanged += OnValueChanged;
+        private void OnDisable()
+        {
+            if (Score == null)
+                return;
 
-        private void OnDisable() => 
-            _score.ValueChanged -= OnValueChanged;
+            Score.ValueChanged -= OnValueChanged;
+        }
 
-        private void OnValueChanged() =>
-            _textMesh.text = ScoreString + _score.Value;
+        public void Init(Score score)
+        {
+            Score = score;
+
+            OnValueChanged();
+
+            enabled = true;
+        }
+
+        private void OnValueChanged()
+        {
+            UpdateText(ScoreString + Score.Value);
+        }
+
+        public void UpdateText(string text)
+        {
+            _textMesh.text = text;
+        }
     }
 }

@@ -1,8 +1,8 @@
-using Assets.Source.Model.Pause;
-using Assets.Source.Model.Utils;
+using Source.Model.Pause;
+using Source.Model.Utils;
 using UnityEngine;
 
-namespace Assets.Source.Model.Ship
+namespace Source.Model.Ship
 {
     public class ShipMovement : IUpdatable, IPauseable
     {
@@ -54,6 +54,9 @@ namespace Assets.Source.Model.Ship
 
         public void Resume() => 
             _isPaused = false;
+
+        public void ResetSpeed() => 
+            Speed = Vector2.zero;
 
         private void RepeatPosition()
         {

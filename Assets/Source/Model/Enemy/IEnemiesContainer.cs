@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Assets.Source.Model.Enemy
+namespace Source.Model.Enemy
 {
     public interface IEnemiesContainer
     {
@@ -12,5 +12,6 @@ namespace Assets.Source.Model.Enemy
         public Enemy GetEnemyByIndex(int index);
         public void Register<T>(T enemy) where T : Enemy;
         public void UnRegister<T>(T enemy) where T : Enemy;
+        public void DestroyAll();
     }
 }

@@ -1,10 +1,11 @@
-using Assets.Source.Model.Enemy;
-using Assets.Source.Presenters.Enemy;
+using Source.Model.Enemy;
+using Source.Presenters.Enemy;
+using UnityEngine;
 
-namespace Assets.Source.Presenters.Factory
+namespace Source.Presenters.Factory
 {
     public interface IUfoPresenterFactory
     {
-        public UfoPresenter CreateUfo(Ufo ufo);
+        public UfoPresenter CreateUfo(Ufo ufo, Camera camera);
     }
 }

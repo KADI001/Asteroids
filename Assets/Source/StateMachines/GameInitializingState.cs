@@ -1,14 +1,14 @@
-﻿using Assets.Source.Model;
-using Assets.Source.Model.Enemy;
-using Assets.Source.Model.Factory;
-using Assets.Source.Model.Pause;
-using Assets.Source.Model.Score;
-using Assets.Source.Model.Ship;
-using Assets.Source.Model.Weapon;
-using Assets.Source.Presenters;
-using Assets.Source.Presenters.Factory;
+﻿using Source.Model;
+using Source.Model.Enemy;
+using Source.Model.Factory;
+using Source.Model.Pause;
+using Source.Model.Score;
+using Source.Model.Ship;
+using Source.Model.Weapon;
+using Source.Presenters;
+using Source.Presenters.Factory;
 
-namespace Assets.Source.StateMachines
+namespace Source.StateMachine
 {
     public class GameInitializingState : IState
     {
@@ -16,11 +16,13 @@ namespace Assets.Source.StateMachines
 
         private readonly GameStateMachine _gameStateMachine;
         private readonly SceneLoader _sceneLoader;
+        private readonly DIContainer DiContainer;
 
-        public GameInitializingState(GameStateMachine gameStateMachine, SceneLoader sceneLoader)
+        public GameInitializingState(GameStateMachine gameStateMachine, SceneLoader sceneLoader, DIContainer diContainer)
         {
             _gameStateMachine = gameStateMachine;
             _sceneLoader = sceneLoader;
+            DiContainer = diContainer;
         }
 
         public void Enter() => 
@@ -33,16 +35,18 @@ namespace Assets.Source.StateMachines
 
         private void EnterLoadGame()
         {
-            DIContainer.Container.RegisterSingle<IPresenterProvider>(new PresenterProvider());
-            DIContainer.Container.RegisterSingle<IPresenterFactory>(new PresenterFactory(DIContainer.Container.GetSingle<IPresenterProvider>()));
-            DIContainer.Container.RegisterSingle<IEnemyPresenterFactory>(DIContainer.Container.GetSingle<IPresenterFactory>());
-            DIContainer.Container.RegisterSingle<IShipInput>(new ShipShipInput());
-            DIContainer.Container.RegisterSingle<IGameFactory>(new GameFactory());
-            DIContainer.Container.RegisterSingle<IBulletFactory>(DIContainer.Container.GetSingle<IGameFactory>());
-            DIContainer.Container.RegisterSingle<IPauseManger>(new PauseManger());
-            DIContainer.Container.RegisterSingle<IPauseRegister>(DIContainer.Container.GetSingle<IPauseManger>());
-            DIContainer.Container.RegisterSingle<IPauseUnRegister>(DIContainer.Container.GetSingle<IPauseManger>());
-            DIContainer.Container.RegisterSingle<IEnemiesContainer>(new EnemiesContainer());
+            DiContainer.RegisterSingle<IPresenterProvider>(new PresenterProvider());
+            DiContainer.RegisterSingle<IPresenterFactory>(new PresenterFactory(DiContainer.GetSingle<IPresenterProvider>()));
+            DiContainer.RegisterSingle<IEnemyPresenterFactory>(DiContainer.GetSingle<IPresenterFactory>());
+            DiContainer.RegisterSingle<IShipInput>(new ShipInput());
+            DiContainer.RegisterSingle<IGameFactory>(new GameFactory());
+            DiContainer.RegisterSingle<IBulletFactory>(DiContainer.GetSingle<IGameFactory>());
+            DiContainer.RegisterSingle<IServiceProvider>(new ServiceProvider());
+            DiContainer.RegisterSingle<IServiceFactory>(new ServiceFactory(DiContainer.GetSingle<IServiceProvider>()));
+            DiContainer.RegisterSingle<IPauseManger>(new PauseManger());
+            DiContainer.RegisterSingle<IPauseRegister>(DiContainer.GetSingle<IPauseManger>());
+            DiContainer.RegisterSingle<IPauseUnRegister>(DiContainer.GetSingle<IPauseManger>());
+            DiContainer.RegisterSingle<IEnemiesContainer>(new EnemiesContainer());
 
             _gameStateMachine.Enter<LoadGameState>();
         }

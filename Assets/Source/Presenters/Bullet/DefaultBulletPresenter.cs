@@ -1,7 +1,7 @@
-using Assets.Source.Presenters.Enemy;
+using Source.Presenters.Enemy;
 using UnityEngine;
 
-namespace Assets.Source.Presenters.Bullet
+namespace Source.Presenters.Bullet
 {
     public sealed class DefaultBulletPresenter : BulletPresenter
     {

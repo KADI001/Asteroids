@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Assets.Source.Model
+namespace Source.Model
 {
     public abstract class Transformable : IDisposable
     {
@@ -30,9 +30,12 @@ namespace Assets.Source.Model
             Moved?.Invoke();
         }
 
-        public void Rotate(float delta)
+        public void Rotate(float delta) => 
+            SetRotation(Rotation + delta);
+
+        public void SetRotation(float rotation)
         {
-            Rotation += delta;
+            Rotation = rotation;
 
             Rotation = Mathf.Repeat(Rotation, 360f);
 

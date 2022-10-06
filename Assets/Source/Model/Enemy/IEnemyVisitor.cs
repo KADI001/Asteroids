@@ -1,4 +1,4 @@
-namespace Assets.Source.Model.Enemy
+namespace Source.Model.Enemy
 {
     public interface IEnemyVisitor
     {

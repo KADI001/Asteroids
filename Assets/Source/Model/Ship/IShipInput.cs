@@ -1,6 +1,6 @@
 using System;
 
-namespace Assets.Source.Model.Ship
+namespace Source.Model.Ship
 {
     public interface IShipInput
     {

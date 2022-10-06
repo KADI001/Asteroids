@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Assets.Source.Model.Utils
+namespace Source.Model.Utils
 {
     public static class Extensions
     {

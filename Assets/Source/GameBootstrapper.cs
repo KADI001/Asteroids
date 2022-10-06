@@ -1,7 +1,7 @@
-using Assets.Source.StateMachines;
+using Source.StateMachine;
 using UnityEngine;
 
-namespace Assets.Source
+namespace Source
 {
     public class GameBootstrapper : MonoBehaviour, ICoroutineRunner
     {

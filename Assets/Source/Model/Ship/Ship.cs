@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Assets.Source.Model.Ship
+namespace Source.Model.Ship
 {
     public class Ship : Transformable
     {

@@ -1,6 +1,6 @@
 using System;
 
-namespace Assets.Source.Model.Score
+namespace Source.Model.Score
 {
     public interface IScore
     {

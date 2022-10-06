@@ -1,7 +1,7 @@
-using Assets.Source.Presenters.Bullet;
+using Source.Presenters.Bullet;
 using UnityEngine;
 
-namespace Assets.Source.Presenters.Enemy
+namespace Source.Presenters.Enemy
 {
     public abstract class EnemyPresenter : Presenter
     {

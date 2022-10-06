@@ -1,6 +1,6 @@
-using Assets.Source.StateMachines;
+using Source.StateMachine;
 
-namespace Assets.Source
+namespace Source
 {
     public class Game
     {

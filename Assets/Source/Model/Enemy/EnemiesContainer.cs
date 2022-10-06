@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Assets.Source.Model.Enemy
+namespace Source.Model.Enemy
 {
     public class EnemiesContainer : IEnemiesContainer
     {
@@ -26,6 +26,12 @@ namespace Assets.Source.Model.Enemy
         {
             _enemies.Remove(enemy);
             enemy.Dead -= OnEnemyDead;
+        }
+
+        public void DestroyAll()
+        {
+            _enemies.ForEach(enemy => enemy.Dispose());
+            _enemies.Clear();
         }
 
         public Enemy GetEnemyByIndex(int index) => 

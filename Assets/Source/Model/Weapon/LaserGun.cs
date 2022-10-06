@@ -1,11 +1,9 @@
 ﻿using System;
-using Assets.Source.Model.Factory;
-using Assets.Source.Model.Ship;
-using Assets.Source.Model.Utils;
-using Assets.Source.Presenters;
+using Source.Model.Factory;
+using Source.Model.Utils;
 using UnityEngine;
 
-namespace Assets.Source.Model.Weapon
+namespace Source.Model.Weapon
 {
     public class LaserGun : IGun, IUpdatable
     {
@@ -39,17 +37,11 @@ namespace Assets.Source.Model.Weapon
             return true;
         }
 
-        public Bullet GetBullet(Vector2 at, Vector2 direction) => 
-            _bulletFactory.GetLaserBullet(at, direction);
-
-        public bool CanShoot() => 
-            _charges > 0;
-
         public void Update(float deltaTime)
         {
             if (_charges >= MaxCharges)
             {
-                Timer.Stop();
+                Timer.Reset();
                 return;
             }
 
@@ -58,6 +50,15 @@ namespace Assets.Source.Model.Weapon
 
             Timer.Update(deltaTime);
         }
+
+        public bool CanShoot() => 
+            _charges > 0;
+
+        public Bullet GetBullet(Vector2 at, Vector2 direction) => 
+            _bulletFactory.GetLaserBullet(at, direction);
+
+        public void ResetCharges() =>
+            _charges = MaxCharges;
 
         private void OnTimerFinished() => 
             _charges++;

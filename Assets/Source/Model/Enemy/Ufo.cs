@@ -1,7 +1,7 @@
-﻿using Assets.Source.Model.Pause;
+﻿using Source.Model.Pause;
 using UnityEngine;
 
-namespace Assets.Source.Model.Enemy
+namespace Source.Model.Enemy
 {
     public class Ufo : Enemy, IUpdatable, IPauseable
     {

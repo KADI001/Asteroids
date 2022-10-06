@@ -1,6 +1,6 @@
 using System;
 
-namespace Assets.Source.Model.Score
+namespace Source.Model.Score
 {
     public class Score : IScore
     {
@@ -13,6 +13,12 @@ namespace Assets.Source.Model.Score
         public void Update(Enemy.Enemy enemy)
         {
             Value += enemy.GetAward();
+            ValueChanged?.Invoke();
+        }
+
+        public void Reset()
+        {
+            Value = 0;
             ValueChanged?.Invoke();
         }
     }

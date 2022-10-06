@@ -1,4 +1,4 @@
-﻿namespace Assets.Source.Model.Factory
+﻿namespace Source.Model.Factory
 {
     public interface IGameFactory : IBulletFactory
     {

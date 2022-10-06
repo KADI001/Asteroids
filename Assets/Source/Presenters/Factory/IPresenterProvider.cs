@@ -1,7 +1,8 @@
-﻿using Assets.Source.Presenters.Bullet;
-using Assets.Source.Presenters.Enemy;
+﻿using Source.Presenters.Bullet;
+using Source.Presenters.Enemy;
+using UnityEngine;
 
-namespace Assets.Source.Presenters.Factory
+namespace Source.Presenters.Factory
 {
     public interface IPresenterProvider
     {
@@ -11,5 +12,7 @@ namespace Assets.Source.Presenters.Factory
         public UfoPresenter GetUfo();
         public LaserBulletPresenter GetLaserBullet();
         public DefaultBulletPresenter GetDefaultBullet();
+        public Hud GetHud();
+        public GameEndWindowPresenter GetGameEndWindow();
     }
 }

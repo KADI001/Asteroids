@@ -1,54 +1,60 @@
-using System;
-using Assets.Source.Model;
-using Assets.Source.Model.Enemy;
-using Assets.Source.Model.Factory;
-using Assets.Source.Model.Pause;
-using Assets.Source.Model.Score;
-using Assets.Source.Model.Utils;
+using Source.Model;
+using Source.Model.Enemy;
+using Source.Model.Pause;
+using Source.Model.Utils;
+using Source.Presenters.Factory;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
-namespace Assets.Source
+namespace Source
 {
-    public class EnemySpawner : MonoBehaviour, IPauseable
+    public class EnemySpawner : IEnemySpawner, IUpdatable, IPauseable
     {
         private const float SpawnIntervalInSeconds = 1f;
         private const float SpawnRadius = 15f;
 
-        [SerializeField] private ShipCompositeRoot _shipCompositeRoot;
-
         private readonly Timer _timer = new Timer(SpawnIntervalInSeconds);
-        private IEnemyPresenterFactory _enemyFactory;
-        private EnemyDestroyer _enemyDestroyer;
-        private bool _isPaused;
 
-        private static DIContainer Container => DIContainer.Container;
-        private static IPauseRegister PauseRegister => Container.GetSingle<IPauseRegister>();
-        private static IEnemiesContainer EnemiesContainer => Container.GetSingle<IEnemiesContainer>();
-        
-        private static Camera Camera => Camera.main;
-        private static Vector2 LeftTopBound => Camera.ViewportToWorldPoint(Vector2.up);
-        private static Vector2 RightDownBound => Camera.ViewportToWorldPoint(Vector2.right);
+        private readonly Camera _camera;
+        private readonly Vector2 _leftTopBound;
+        private readonly Vector2 _rightDownBound;
+
+        private readonly Transformable _ship;
+        private readonly EnemyDestroyer _enemyDestroyer;
+        private readonly IEnemyPresenterFactory _enemyFactory;
+        private readonly IPauseRegister _pauseRegister;
+        private readonly IEnemiesContainer _enemiesContainer;
+
+        private bool _isPaused;
 
         public bool IsPaused => _isPaused;
 
-        private void Awake()
+        public EnemySpawner(Camera camera, Transformable ship, IEnemyPresenterFactory enemyFactory, IPauseRegister pauseRegister, IEnemiesContainer enemiesContainer)
         {
-            _enemyFactory = Container.GetSingle<IEnemyPresenterFactory>();
-            _enemyDestroyer = new EnemyDestroyer(EnemiesContainer, Vector2.one * SpawnRadius, LeftTopBound, RightDownBound);
-            PauseRegister.Register(this);
+            _camera = camera;
+            _leftTopBound = _camera.ViewportToWorldPointFromCamera(Vector2.up);
+            _rightDownBound = _camera.ViewportToWorldPointFromCamera(Vector2.right);
+
+            _ship = ship;
+
+            _enemyFactory = enemyFactory;
+            _pauseRegister = pauseRegister;
+            _enemiesContainer = enemiesContainer;
+
+            _enemyDestroyer = new EnemyDestroyer(_enemiesContainer, Vector2.one * SpawnRadius, _leftTopBound, _rightDownBound);
+
+            _pauseRegister.Register(this);
         }
 
-        private void Start() =>
+        public void Start() =>
             _timer.Start(OnTimerFinished);
 
-        private void Update()
+        public void Update(float deltaTime)
         {
             if(IsPaused) 
                 return;
 
-            _timer.Update(Time.deltaTime);
-            _enemyDestroyer.Update(Time.deltaTime);
+            _timer.Update(deltaTime);
+            _enemyDestroyer.Update(deltaTime);
         }
 
         public void Pause()
@@ -65,10 +71,7 @@ namespace Assets.Source
 
         private void OnTimerFinished()
         {
-            if(_shipCompositeRoot.Ship == null)
-                return;
-
-            Vector2 position = GetRandomPositionInCircleWithExceptedBoxZone(Vector2.zero, SpawnRadius, LeftTopBound, RightDownBound);
+            Vector2 position = GetRandomPositionInCircleWithExceptedBoxZone(Vector2.zero, SpawnRadius, _leftTopBound, _rightDownBound);
             int range = Random.Range(1, 4);
 
             Enemy enemy = null;
@@ -78,27 +81,27 @@ namespace Assets.Source
                 case 1:
                 case 2:
                 {
-                    Vector2 flyDirection = GetDirectionThroughScreen(position, LeftTopBound, RightDownBound);
+                    Vector2 flyDirection = GetDirectionThroughScreen(position, _leftTopBound, _rightDownBound);
                     Asteroid asteroid = new Asteroid(position, flyDirection, 2);
                     asteroid.FellApart += OnAsteroidFellApart;
                     enemy = asteroid;
-                    _enemyFactory.CreateAsteroid(asteroid);
+                    _enemyFactory.CreateAsteroid(asteroid, _camera);
                     break;
                 }
 
                 case 3:
                 {
-                    Ufo ufo = new Ufo(position, 0.6f, _shipCompositeRoot.Ship);
+                    Ufo ufo = new Ufo(position, 0.6f, _ship);
                     enemy = ufo;
-                    _enemyFactory.CreateUfo(ufo);
+                    _enemyFactory.CreateUfo(ufo, _camera);
                 } 
                     break;
             }
 
             if(enemy is IPauseable pauseable)
-                PauseRegister.Register(pauseable);
+                _pauseRegister.Register(pauseable);
 
-            EnemiesContainer.Register(enemy);
+            _enemiesContainer.Register(enemy);
 
             _timer.Restart();
         }
@@ -107,11 +110,11 @@ namespace Assets.Source
         {
             foreach (AsteroidPart asteroidPart in asteroidParts)
             {
-                PauseRegister.Register(asteroidPart);
-                EnemiesContainer.Register(asteroidPart);
+                _pauseRegister.Register(asteroidPart);
+                _enemiesContainer.Register(asteroidPart);
             }
 
-            _enemyFactory.CreateAsteroidParts(asteroidParts);
+            _enemyFactory.CreateAsteroidParts(asteroidParts, _camera);
         }
 
         private static Vector2 GetRandomPositionInCircle(Vector2 at, float radius) =>
@@ -132,5 +135,11 @@ namespace Assets.Source
 
         private static Vector2 GetRandomPointInBox(Vector2 leftTopBound, Vector2 rightDownBound) =>
             new Vector2(Random.Range(leftTopBound.x, rightDownBound.x + 1), Random.Range(rightDownBound.y, leftTopBound.y + 1));
+    }
+
+    public static class CameraExtension
+    {
+        public static Vector3 ViewportToWorldPointFromCamera(this Camera camera, Vector2 viewportPoint) => 
+            camera.ViewportToWorldPoint(viewportPoint) - camera.transform.position;
     }
 }

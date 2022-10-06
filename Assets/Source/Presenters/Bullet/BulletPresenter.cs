@@ -1,4 +1,4 @@
-namespace Assets.Source.Presenters.Bullet
+namespace Source.Presenters.Bullet
 {
     public class BulletPresenter : Presenter
     {

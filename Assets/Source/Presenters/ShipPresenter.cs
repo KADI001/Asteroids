@@ -1,9 +1,9 @@
-using Assets.Source.Model.Pause;
-using Assets.Source.Model.Ship;
-using Assets.Source.Presenters.Enemy;
+using Source.Model.Pause;
+using Source.Model.Ship;
+using Source.Presenters.Enemy;
 using UnityEngine;
 
-namespace Assets.Source.Presenters
+namespace Source.Presenters
 {
     [RequireComponent(typeof(ShipController))]
     public class ShipPresenter : Presenter

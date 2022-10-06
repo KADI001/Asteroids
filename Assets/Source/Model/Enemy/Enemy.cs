@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Assets.Source.Model.Enemy
+namespace Source.Model.Enemy
 {
     public abstract class Enemy : Transformable
     {

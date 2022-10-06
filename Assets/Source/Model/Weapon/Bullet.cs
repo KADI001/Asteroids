@@ -1,7 +1,7 @@
-﻿using Assets.Source.Model.Utils;
+﻿using Source.Model.Utils;
 using UnityEngine;
 
-namespace Assets.Source.Model.Weapon
+namespace Source.Model.Weapon
 {
     public abstract class Bullet : Transformable, IUpdatable
     {

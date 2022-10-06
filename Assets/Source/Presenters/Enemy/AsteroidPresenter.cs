@@ -1,10 +1,6 @@
-﻿using Assets.Source.Model.Enemy;
-using Assets.Source.Model.Factory;
-using Assets.Source.Model.Pause;
-using Assets.Source.Presenters.Bullet;
-using UnityEngine;
+﻿using Source.Model.Enemy;
 
-namespace Assets.Source.Presenters.Enemy
+namespace Source.Presenters.Enemy
 {
     public class AsteroidPresenter : EnemyPresenter
     {

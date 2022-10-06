@@ -1,14 +1,18 @@
-﻿using Assets.Source.Model.Factory;
-using Assets.Source.Model.Ship;
-using Assets.Source.Model.Weapon;
-using Assets.Source.Presenters.Bullet;
+﻿using System;
+using Source.Model.Score;
+using Source.Model.Ship;
+using Source.Model.Weapon;
+using Source.Presenters.Bullet;
+using UnityEngine;
 
-namespace Assets.Source.Presenters.Factory
+namespace Source.Presenters.Factory
 {
     public interface IPresenterFactory : IEnemyPresenterFactory
-    {
-        ShipPresenter CreateShip(Ship ship);
-        LaserBulletPresenter CreateLaserBullet(LaserBullet bullet);
-        DefaultBulletPresenter CreateDefaultBullet(DefaultBullet bullet);
+    { 
+        ShipPresenter CreateShip(Ship ship, Camera camera);
+        LaserBulletPresenter CreateLaserBullet(LaserBullet bullet, Camera camera);
+        DefaultBulletPresenter CreateDefaultBullet(DefaultBullet bullet, Camera camera);
+        Hud CreateHud(ShipMovement shipMovement, LaserGun laserGun, Score score);
+        GameEndWindowPresenter CreateGameEndWindow(IShipInput shipInput, Action onRestarted);
     }
 }

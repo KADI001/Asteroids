@@ -1,9 +1,9 @@
 ﻿using System;
-using Assets.Source.Model.Pause;
+using Source.Model.Pause;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Assets.Source.Model.Enemy
+namespace Source.Model.Enemy
 {
     public class Asteroid : Enemy, IUpdatable, IPauseable
     {

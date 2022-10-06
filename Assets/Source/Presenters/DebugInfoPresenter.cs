@@ -1,11 +1,11 @@
 using System;
-using Assets.Source.Model.Ship;
-using Assets.Source.Model.Utils;
-using Assets.Source.Model.Weapon;
+using Source.Model.Ship;
+using Source.Model.Utils;
+using Source.Model.Weapon;
 using TMPro;
 using UnityEngine;
 
-namespace Assets.Source.Presenters
+namespace Source.Presenters
 {
     public class DebugInfoPresenter : MonoBehaviour
     {

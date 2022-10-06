@@ -1,29 +1,33 @@
-using Assets.Source.Model;
-using Assets.Source.Model.Ship;
-using Assets.Source.Model.Utils;
-using Assets.Source.Model.Weapon;
-using Assets.Source.Presenters;
+using Source.Model;
+using Source.Model.Ship;
+using Source.Model.Utils;
+using Source.Model.Weapon;
+using Source.Presenters;
 using UnityEngine;
 
-namespace Assets.Source
+namespace Source
 {
     [RequireComponent(typeof(ShipPresenter))]
     public class ShipController : MonoBehaviour
     {
         [SerializeField] private Transform _shootPoint;
 
-        private static readonly DIContainer DiContainer = DIContainer.Container;
-
         private IShipInput _shipInput;
         private ShipMovement _shipMovement;
         private IGun _firstGun;
         private IGun _secondGun;
+        private Camera _camera;
 
-        private void Awake() => 
-            _shipInput = DiContainer.GetSingle<IShipInput>();
+        public Vector2 ShootPoint => _shootPoint.position - _camera.transform.position;
 
-        public void Init(ShipMovement shipMovement) => 
+        public void Init(IShipInput shipInput, ShipMovement shipMovement, Camera camera)
+        {
+            _shipInput = shipInput;
+            _camera = camera;
             _shipMovement = shipMovement;
+
+            enabled = true;
+        }
 
         private void Update()
         {
@@ -42,12 +46,13 @@ namespace Assets.Source
 
             if(_shipInput.Rotate != 0)
                 _shipMovement.Rotate(_shipInput.Rotate, Time.deltaTime);
-
-            _shipMovement?.Update(Time.deltaTime);
         }
 
         private void OnEnable()
         {
+            if(_shipInput == null)
+                return;
+
             _shipInput.Enable();
 
             _shipInput.FirstGunShot += OnFirstGunButtonClicked;
@@ -56,11 +61,17 @@ namespace Assets.Source
 
         private void OnDisable()
         {
+            if (_shipInput == null)
+                return;
+
             _shipInput.Disable();
 
             _shipInput.FirstGunShot -= OnFirstGunButtonClicked;
             _shipInput.SecondGunShot -= OnSecondGunButtonClicked;
         }
+
+        public void EnableShipControl() =>
+            enabled = true;
 
         public void DisableShipControl() => 
             enabled = false;
@@ -77,10 +88,13 @@ namespace Assets.Source
             return this;
         }
 
+        public void ResetMovementState() => 
+            _shipMovement.ResetSpeed();
+
         private void OnFirstGunButtonClicked() => 
-            _firstGun?.TryShoot(_shootPoint.position, _shipMovement.Forward);
+            _firstGun?.TryShoot(ShootPoint, _shipMovement.Forward);
 
         private void OnSecondGunButtonClicked() => 
-            _secondGun?.TryShoot(_shootPoint.position, _shipMovement.Forward);
+            _secondGun?.TryShoot(ShootPoint, _shipMovement.Forward);
     }
 }

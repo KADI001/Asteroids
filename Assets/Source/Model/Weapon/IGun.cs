@@ -1,10 +1,10 @@
 ﻿using System;
-using Assets.Source.Model.Pause;
-using Assets.Source.Model.Ship;
-using Assets.Source.Model.Utils;
+using Source.Model.Pause;
+using Source.Model.Ship;
+using Source.Model.Utils;
 using UnityEngine;
 
-namespace Assets.Source.Model.Weapon
+namespace Source.Model.Weapon
 {
     public interface IGun
     {

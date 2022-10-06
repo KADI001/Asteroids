@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Assets.Source.Model.Utils
+namespace Source.Model.Utils
 {
     public class Timer : IUpdatable
     {
@@ -48,7 +48,6 @@ namespace Assets.Source.Model.Utils
         {
             AccumulatedTime = 0f;
             IsRunning = false;
-            Finished = null;
         }
 
         public void Stop()

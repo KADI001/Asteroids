@@ -1,4 +1,4 @@
-namespace Assets.Source.Model
+namespace Source.Model
 {
     public interface IUpdatable
     {

@@ -1,7 +1,7 @@
 using System;
-using Assets.Source.Model.Enemy;
+using Source.Model.Enemy;
 
-namespace Assets.Source.Model.Score
+namespace Source.Model.Score
 {
     public class ScoreCounter : IDisposable
     {

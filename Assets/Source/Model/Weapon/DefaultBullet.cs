@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets.Source.Model.Weapon
+namespace Source.Model.Weapon
 {
     public class DefaultBullet : Bullet
     {
